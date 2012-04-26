@@ -128,14 +128,14 @@ def close_a(el, kw):
 def process_tag_events(subtree, out_buffer):
     """Process an ElementTree subtree and send tag events to handlers.
     """
-    opened = deque()
-    to_open = deque([subtree])
+    opened = set()
+    stack = deque([subtree])
     blackboard = {}
 
-    while opened or to_open:
-        if to_open:
-            subtree = to_open.pop()
+    while stack:
+        subtree = stack.pop()
 
+        if subtree not in opened:
             # Open the subtree
             # print "Opening", subtree.tag
             for events in open_events:
@@ -148,15 +148,14 @@ def process_tag_events(subtree, out_buffer):
             for events in open_ephem_events:
                 events.clear()
 
+            stack.append(subtree)
+            
             # Queue children
             for el in reversed(subtree):
-                to_open.append(el)
+                stack.append(el)
 
-            opened.append(subtree)
-
-        elif opened:
-            subtree = opened.pop()
-
+            opened.add(subtree)
+        else:
             # Close the subtree
             # print "Closing", subtree.tag
             for events in close_events:
