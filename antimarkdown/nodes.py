@@ -18,7 +18,7 @@ def whitespace(text):
     return WHITESPACE_CP.sub(u' ', text.replace(u'\n', u' '))
 
 
-NORMALIZE_NEWLINES_CP = re.compile(ur'\n\n+', re.MULTILINE)
+NORMALIZE_NEWLINES_CP = re.compile(ur'\n\n+(?![^\n]+\n[-=]|#)', re.MULTILINE)
 
 
 def normalize(markdown_text):
@@ -46,7 +46,7 @@ class Node(collections.deque):
 
     def text(self):
         return u'%s%s' % (
-            (self.el.text or u'').lstrip(),
+            whitespace(self.el.text or u'').lstrip(),
             u''.join(unicode(node) for node in self),
             )
 
@@ -70,20 +70,28 @@ class P(Block):
 class A(Node):
     def text(self):
         el = self.el
-        if el.attrib.get('href') == el.text:
-            return u'<%s>' % super(A, self).text()
+        href = el.attrib.get('href')
+        if href == el.text:
+            return u'<%s>' % href
         else:
-            return u"[%(text)s](<%(href)s>%(title)s)" % {
+            return u"[%(text)s](%(href)s%(title)s)" % {
                 'text': escape(super(A, self).text(), u'[]'),
                 'title': (u' "%s"' % escape(el.attrib['title'], u'()')) if 'title' in el.attrib else u'',
-                'href': escape(el.attrib.get('href'), u'()')
+                'href': (u'<%s>' % escape(el.attrib.get('href'), u'()')) if href else u''
                 }
 
 
 class PRE(Block):
     def text(self):
         self.blackboard['pre'] = True
-        result = u'\n'.join(u'    %s' % n for n in super(PRE, self).text().splitlines())
+
+        text = u'%s%s' % (
+            self.el.text or u'',
+            u''.join(unicode(node) for node in self),
+            )
+
+        result = u'\n'.join(u'    %s' % n for n in text.splitlines())
+
         del self.blackboard['pre']
         return result
 
@@ -132,11 +140,28 @@ class LI(Block):
 
 class CODE(Node):
     def text(self):
-        text = super(CODE, self).text()
+        text = u'%s%s' % (
+            self.el.text or u'',
+            u''.join(unicode(node) for node in self),
+            )
         if self.blackboard.get('pre'):
             return text
         else:
             return u'`%s`' % text
+
+
+class STRONG(Node):
+    def text(self):
+        return u'**%s**' % super(STRONG, self).text()
+
+B = STRONG
+
+
+class EM(Node):
+    def text(self):
+        return u'*%s*' % super(EM, self).text()
+
+I = EM
 
 
 class IMG(Node):
@@ -148,3 +173,51 @@ class IMG(Node):
 
     def tail(self):
         return super(IMG, self).tail() or u' '
+
+
+class HR(Block):
+    def text(self):
+        return u'---'
+
+
+class DIV(Block):
+    def text(self):
+        return u'<div>%s%s</div>' % (
+            (self.el.text or u''),
+            u''.join(unicode(node) for node in self),
+            )
+
+    def tail(self):
+        return self.el.tail or u''
+
+
+class H1(Block):
+    def text(self):
+        text = super(H1, self).text()
+        return u'\n%s\n%s\n' % (text, len(text) * '=')
+
+
+class H2(Block):
+    def text(self):
+        text = super(H2, self).text()
+        return u'\n%s\n%s\n' % (text, len(text) * '-')
+
+
+class H3(Block):
+    def text(self):
+        return u'\n### %s ###' % super(H3, self).text()
+
+
+class H4(Block):
+    def text(self):
+        return u'\n### %s ###' % super(H4, self).text()
+
+
+class H5(Block):
+    def text(self):
+        return u'\n##### %s #####' % super(H5, self).text()
+
+
+class H6(Block):
+    def text(self):
+        return u'\n###### %s ######' % super(H6, self).text()

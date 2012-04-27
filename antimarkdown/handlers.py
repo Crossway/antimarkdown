@@ -10,7 +10,13 @@ def render(*domtrees):
     root = nodes.Root()
     for dom in domtrees:
         build_render_tree(root, dom)
-    return unicode(root)
+    lines = unicode(root).rstrip().splitlines()
+
+    # Strip leading empty lines
+    while not lines[0].strip():
+        lines.pop(0)
+
+    return u'\n'.join(lines)
 
 
 def build_render_tree(root, domtree):
