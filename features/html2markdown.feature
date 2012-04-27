@@ -11,4 +11,5 @@ Feature: An HTML-to-Markdown converter
       | basic/auto-links                   |
       | basic/angle-links-and-img          |
       | basic/blockquotes-with-code-blocks |
+      | basic/codeblock-in-list            |
 

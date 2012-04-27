@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""setup.py -- setup file for markdown-hilite
+"""setup.py -- setup file for antimarkdown
 """
 from setuptools import setup
 

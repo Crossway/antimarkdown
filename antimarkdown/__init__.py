@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """antimarkdown -- convert Markdown to HTML.
 """
-import re
 from BeautifulSoup import UnicodeDammit
 from lxml import html
 from StringIO import StringIO
@@ -12,24 +11,15 @@ import handlers
 default_safe_tags = set('p blockquote i em strong b u a h1 h2 h3 pre code br img ul ol li span'.split())
 default_safe_attrs = set('href src alt style title'.split())
 
-NORMALIZE_NEWLINES_CP = re.compile(ur'\n\n+', re.MULTILINE)
-NORMALIZE_BLOCKQUOTES_CP = re.compile(ur'^(?: *> +\n)+(?! *>)', re.MULTILINE)
-
-
-def normalize(markdown_text):
-    norm = markdown_text
-    norm = NORMALIZE_BLOCKQUOTES_CP.sub(u'\n', norm)
-    norm = NORMALIZE_NEWLINES_CP.sub(u'\n\n', norm)
-    return norm.rstrip()
-
 
 def to_markdown(html_string, safe_tags=None, safe_attrs=None):
     """Convert the given HTML text fragment to Markdown.
     """
-    out = StringIO()
-    for f in parse_fragments(html_string, safe_tags=None, safe_attrs=None):
-        handlers.process_tag_events(f, out)
-    return normalize(out.getvalue())
+    # out = StringIO()
+    # for f in parse_fragments(html_string, safe_tags=None, safe_attrs=None):
+    #     handlers.process_tag_events(f, out)
+    # return normalize(out.getvalue())
+    return handlers.render(*parse_fragments(html_string, safe_tags))
 
 
 def parse_fragments(html_string, safe_tags=None, safe_attrs=None):

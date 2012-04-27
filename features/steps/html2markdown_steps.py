@@ -22,15 +22,22 @@ def step_translate(context):
     import antimarkdown
     with codecs.open(context.html_path, encoding='utf-8') as fi:
         html = context.html_text = fi.read()
-    context.translated_markdown_text = antimarkdown.to_markdown(html)
+    context.translated_markdown_text = antimarkdown.to_markdown(html).rstrip()
 
 
 @then(u'the resulting Markdown should match the corresponding text in the Markdown file.')
 def step_check_md(context):
     with codecs.open(context.markdown_path, encoding='utf-8') as fi:
         markdown = context.markdown_text = fi.read().rstrip()
-    
-    assert context.translated_markdown_text == markdown, '\n' + '\n'.join(
+    # print "############# Got:"
+    # print context.translated_markdown_text
+    # print "\n############# Expected:"
+    # print markdown
+    # print "############# Got:"
+    # print repr(context.translated_markdown_text)
+    # print "\n############# Expected:"
+    # print repr(markdown)
+    assert context.translated_markdown_text == markdown, '\nDifferences:\n' + '\n'.join(
         difflib.context_diff([repr(n) for n in context.translated_markdown_text.splitlines()],
                              [repr(n) for n in markdown.splitlines()],
                              fromfile='Got', tofile='Expected'))
