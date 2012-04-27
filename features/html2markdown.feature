@@ -6,8 +6,9 @@ Feature: An HTML-to-Markdown converter
     Then the resulting Markdown should match the corresponding text in the Markdown file.
     
     Examples: Translations
-      | file base name                |
-      | basic/amps-and-angle-encoding |
-      | basic/auto-links              |
-      
+      | file base name                     |
+      | basic/amps-and-angle-encoding      |
+      | basic/auto-links                   |
+      | basic/angle-links-and-img          |
+      | basic/blockquotes-with-code-blocks |
 

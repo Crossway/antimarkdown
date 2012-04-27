@@ -31,4 +31,6 @@ def step_check_md(context):
         markdown = context.markdown_text = fi.read().rstrip()
     
     assert context.translated_markdown_text == markdown, '\n' + '\n'.join(
-        difflib.context_diff(context.translated_markdown_text.splitlines(), markdown.splitlines(), fromfile='Got', tofile='Expected'))
+        difflib.context_diff([repr(n) for n in context.translated_markdown_text.splitlines()],
+                             [repr(n) for n in markdown.splitlines()],
+                             fromfile='Got', tofile='Expected'))

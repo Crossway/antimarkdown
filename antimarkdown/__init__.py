@@ -10,13 +10,17 @@ import handlers
 
 
 default_safe_tags = set('p blockquote i em strong b u a h1 h2 h3 pre code br img ul ol li span'.split())
-default_safe_attrs = set('href src style title'.split())
+default_safe_attrs = set('href src alt style title'.split())
 
 NORMALIZE_NEWLINES_CP = re.compile(ur'\n\n+', re.MULTILINE)
+NORMALIZE_BLOCKQUOTES_CP = re.compile(ur'^(?: *> +\n)+(?! *>)', re.MULTILINE)
 
 
 def normalize(markdown_text):
-    return NORMALIZE_NEWLINES_CP.sub(u'\n\n', markdown_text).rstrip()
+    norm = markdown_text
+    norm = NORMALIZE_BLOCKQUOTES_CP.sub(u'\n', norm)
+    norm = NORMALIZE_NEWLINES_CP.sub(u'\n\n', norm)
+    return norm.rstrip()
 
 
 def to_markdown(html_string, safe_tags=None, safe_attrs=None):
