@@ -105,7 +105,7 @@ class BLOCKQUOTE(Block):
     NORMALIZE_BLOCKQUOTES_TRAILING_CP = re.compile(ur'^(?: *> +\n)+(?! *>)', re.MULTILINE)
     
     def text(self):
-        text = super(BLOCKQUOTE, self).text()
+        text = super(BLOCKQUOTE, self).text().rstrip()
         lines = [u'> %s' % n for n in text.splitlines()]
         if lines[0].strip() == u'>':
             lines[0] = u''
@@ -114,7 +114,11 @@ class BLOCKQUOTE(Block):
         text = u'\n'.join(lines)
         text = self.NORMALIZE_BLOCKQUOTES_LEADING_CP.sub(ur'\1', text)
         text = self.NORMALIZE_BLOCKQUOTES_TRAILING_CP.sub(u'\n', text)
-        return text
+        
+        return text.rstrip()
+
+    def tail(self):
+        return super(BLOCKQUOTE, self).tail().rstrip() + u'\n\n'
 
 
 class OL(Block):

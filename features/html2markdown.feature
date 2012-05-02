@@ -20,4 +20,4 @@ Feature: An HTML-to-Markdown converter
       | basic/literal-quotes                |
       | basic/markdown-documentation-basics |
       | basic/markdown-syntax               |
-
+      | basic/nested-blockquotes            |
