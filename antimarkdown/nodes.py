@@ -124,13 +124,17 @@ class BLOCKQUOTE(Block):
 class OL(Block):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'1. ')
-        return super(OL, self).text().rstrip()
+        result = super(OL, self).text().rstrip()
+        self.blackboard['li-style'].pop()
+        return result
 
 
 class UL(Block):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'* ')
-        return super(UL, self).text().rstrip()
+        result = super(UL, self).text().rstrip()
+        self.blackboard['li-style'].pop()
+        return result
 
 
 class LI(Block):
