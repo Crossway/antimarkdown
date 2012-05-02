@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 """antimarkdown.nodes -- text nodes and their rendering behavior.
+
+Node classes match up to HTML elements, and should be named after the
+corresponding tag in all upper-case. Nodes should produce inner text
+(including children) and tail text (not siblings).
 """
 import re
 import collections
@@ -116,26 +120,29 @@ class BLOCKQUOTE(Block):
 class OL(Block):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'1. ')
-        return super(OL, self).text()
+        return super(OL, self).text().rstrip()
 
 
 class UL(Block):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'* ')
-        return super(UL, self).text()
+        return super(UL, self).text().rstrip()
 
 
 class LI(Block):
     def text(self):
         li = self.blackboard.get('li-style', [u'* '])[0]
-        lines = super(LI, self).text().splitlines()
-        lines[0] = li + lines[0]
-        if len(lines) > 1:
+
+        text = li + whitespace(self.el.text or u'').lstrip()
+
+        lines = u''.join(u'\n' + unicode(node) if isinstance(node, Block) else unicode(node)
+                         for node in self).splitlines()
+        if lines:
             lines[1:] = [u'  %s' % ln for ln in lines[1:]]
-        return u'\n'.join(lines)
+        return text + u'\n'.join(lines).rstrip() + u'\n'
 
     def tail(self):
-        return (self.el.tail or u'').rstrip() + u'\n'
+        return (self.el.tail or u'').rstrip()
 
 
 class CODE(Node):
@@ -147,7 +154,10 @@ class CODE(Node):
         if self.blackboard.get('pre'):
             return text
         else:
-            return u'`%s`' % text
+            if u'`' in text:
+                return u'``%s``' % text
+            else:
+                return u'`%s`' % text
 
 
 class STRONG(Node):

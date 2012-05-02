@@ -19,4 +19,5 @@ Feature: An HTML-to-Markdown converter
       | basic/links-inline                  |
       | basic/literal-quotes                |
       | basic/markdown-documentation-basics |
+      | basic/markdown-syntax               |
 
