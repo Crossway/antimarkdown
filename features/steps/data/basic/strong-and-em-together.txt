@@ -2,6 +2,6 @@
 
 So is ***this*** word.
 
-___This is strong and em.___
+***This is strong and em.***
 
-So is ___this___ word.
+So is ***this*** word.

@@ -15,11 +15,18 @@ def escape(text, characters):
     return text
 
 
-WHITESPACE_CP = re.compile(r'\s+')
+WHITESPACE_CP = re.compile(ur'\s+')
 
 
 def whitespace(text):
     return WHITESPACE_CP.sub(u' ', text.replace(u'\n', u' '))
+
+
+NEWLINES_CP = re.compile(u'\n\n+', re.MULTILINE)
+
+
+def newlines(text):
+    return NEWLINES_CP.sub(u'\n\n', text)
 
 
 NORMALIZE_NEWLINES_CP = re.compile(ur'\n\n+(?![^\n]+\n[-=]|#)', re.MULTILINE)
@@ -64,7 +71,7 @@ class Node(collections.deque):
 
 class Block(Node):
     def tail(self):
-        return (self.el.tail or u'').rstrip() + u'\n\n'
+        return u'\n\n' + whitespace(self.el.tail or u'').lstrip()
 
 
 class P(Block):
@@ -117,14 +124,16 @@ class BLOCKQUOTE(Block):
         
         return text.rstrip()
 
-    def tail(self):
-        return super(BLOCKQUOTE, self).tail().rstrip() + u'\n\n'
-
 
 class OL(Block):
     def text(self):
-        self.blackboard.setdefault('li-style', []).append(u'1. ')
-        result = super(OL, self).text().rstrip()
+        def numbers():
+            i = 0
+            while True:
+                i += 1
+                yield u'%s. ' % i
+        self.blackboard.setdefault('li-style', []).append(numbers())
+        result = newlines(super(OL, self).text())
         self.blackboard['li-style'].pop()
         return result
 
@@ -132,25 +141,34 @@ class OL(Block):
 class UL(Block):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'* ')
-        result = super(UL, self).text().rstrip()
+        result = newlines(super(UL, self).text())
         self.blackboard['li-style'].pop()
         return result
 
 
 class LI(Block):
     def text(self):
-        li = self.blackboard.get('li-style', [u'* '])[0]
+        li = self.blackboard.get('li-style', [u'* '])[-1]
+        if hasattr(li, 'next'):
+            li = li.next()
+        text = whitespace(self.el.text or u'').lstrip()
 
-        text = li + whitespace(self.el.text or u'').lstrip()
+        lines = newlines(u''.join(u'\n' + unicode(node)
+                                  if isinstance(node, Block) else unicode(node)
+                                  for node in self)
+                         ).splitlines()
 
-        lines = u''.join(u'\n' + unicode(node) if isinstance(node, Block) else unicode(node)
-                         for node in self).splitlines()
         if lines:
-            lines[1:] = [u'  %s' % ln for ln in lines[1:]]
-        return text + u'\n'.join(lines).rstrip() + u'\n'
+            space = u' ' * len(li)
+            lines[1:] = [u'%s%s' % (space, ln) for ln in lines[1:]]
+
+        lines = u'\n'.join(lines)
+        if not text:
+            lines = lines.lstrip()
+        return newlines(li + text + lines)
 
     def tail(self):
-        return (self.el.tail or u'').rstrip()
+        return u'\n' + whitespace(self.el.tail or u'').lstrip()
 
 
 class CODE(Node):

@@ -16,7 +16,7 @@ def render(*domtrees):
     while not lines[0].strip():
         lines.pop(0)
 
-    return u'\n'.join(lines)
+    return nodes.normalize(u'\n'.join(lines))
 
 
 def build_render_tree(root, domtree):
