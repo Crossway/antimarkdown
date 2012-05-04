@@ -1,15 +1,19 @@
-### Hello world
-Line 2
-Line 3
+### Hello world ###
 
-# [Markdown][5]  
+Line 2 Line 3
 
-# [Markdown](http://some.link.com/)
 
-# [5]: http://foo.com/
+[Markdown](<http://some.link.com/>)
+===================================
 
-# Issue #1: Markdown
+
+Issue #1: Markdown
+==================
 
 Text
-# Header
+
+
+Header
+======
+
 Some other text

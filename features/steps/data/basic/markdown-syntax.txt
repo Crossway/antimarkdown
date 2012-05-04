@@ -1,34 +1,30 @@
 Markdown: Syntax
 ================
 
-* [Main](</projects/markdown/> "Markdown Project Page")
-* [Basics](</projects/markdown/basics> "Markdown Basics")
-* [Syntax]( "Markdown Syntax Documentation")
-* [License](</projects/markdown/license> "Pricing and License Information")
-* [Dingus](</projects/markdown/dingus> "Online Markdown Web Form")
-
-* [Overview](<#overview>)
-  * [Philosophy](<#philosophy>)
-  * [Inline HTML](<#html>)
-  * [Automatic Escaping for Special Characters](<#autoescape>)
-
-* [Block Elements](<#block>)
-  * [Paragraphs and Line Breaks](<#p>)
-  * [Headers](<#header>)
-  * [Blockquotes](<#blockquote>)
-  * [Lists](<#list>)
-  * [Code Blocks](<#precode>)
-  * [Horizontal Rules](<#hr>)
-
-* [Span Elements](<#span>)
-  * [Links](<#link>)
-  * [Emphasis](<#em>)
-  * [Code](<#code>)
-  * [Images](<#img>)
-
-* [Miscellaneous](<#misc>)
-  * [Backslash Escapes](<#backslash>)
-  * [Automatic Links](<#autolink>)
+*   [Main](</projects/markdown/> "Markdown Project Page")
+*   [Basics](</projects/markdown/basics> "Markdown Basics")
+*   [Syntax]( "Markdown Syntax Documentation")
+*   [License](</projects/markdown/license> "Pricing and License Information")
+*   [Dingus](</projects/markdown/dingus> "Online Markdown Web Form")
+*   [Overview](<#overview>)
+    *   [Philosophy](<#philosophy>)
+    *   [Inline HTML](<#html>)
+    *   [Automatic Escaping for Special Characters](<#autoescape>)
+*   [Block Elements](<#block>)
+    *   [Paragraphs and Line Breaks](<#p>)
+    *   [Headers](<#header>)
+    *   [Blockquotes](<#blockquote>)
+    *   [Lists](<#list>)
+    *   [Code Blocks](<#precode>)
+    *   [Horizontal Rules](<#hr>)
+*   [Span Elements](<#span>)
+    *   [Links](<#link>)
+    *   [Emphasis](<#em>)
+    *   [Code](<#code>)
+    *   [Images](<#img>)
+*   [Miscellaneous](<#misc>)
+    *   [Backslash Escapes](<#backslash>)
+    *   [Automatic Links](<#autolink>)
 
 **Note:** This document is itself written using Markdown; you can [see the source for it by adding '.text' to the URL](</projects/markdown/syntax.text>).
 
@@ -458,11 +454,11 @@ Then, anywhere in the document, you define your link label like this, on a line 
 
 That is:
 
-* Square brackets containing the link identifier (optionally indented from the left margin using up to three spaces);
-* followed by a colon;
-* followed by one or more spaces (or tabs);
-* followed by the URL for the link;
-* optionally followed by a title attribute for the link, enclosed in double or single quotes.
+*   Square brackets containing the link identifier (optionally indented from the left margin using up to three spaces);
+*   followed by a colon;
+*   followed by one or more spaces (or tabs);
+*   followed by the URL for the link;
+*   optionally followed by a title attribute for the link, enclosed in double or single quotes.
 
 The link URL may, optionally, be surrounded by angle brackets:
 
@@ -573,7 +569,7 @@ To produce a literal asterisk or underscore at a position where it would otherwi
 
 ### Code ###
 
-To indicate a span of code, wrap it with backtick quotes (`````). Unlike a pre-formatted code block, a code span indicates code within a normal paragraph. For example:
+To indicate a span of code, wrap it with backtick quotes (`` ` ``). Unlike a pre-formatted code block, a code span indicates code within a normal paragraph. For example:
 
     Use the `printf()` function.
 
@@ -633,9 +629,9 @@ Inline image syntax looks like this:
 
 That is:
 
-* An exclamation mark: `!`;
-* followed by a set of square brackets, containing the `alt` attribute text for the image;
-* followed by a set of parentheses, containing the URL or path to the image, and an optional `title` attribute enclosed in double or single quotes.
+*   An exclamation mark: `!`;
+*   followed by a set of square brackets, containing the `alt` attribute text for the image;
+*   followed by a set of parentheses, containing the URL or path to the image, and an optional `title` attribute enclosed in double or single quotes.
 
 Reference-style image syntax looks like this:
 

@@ -1,31 +1,27 @@
-
-* A multi-paragraph list, 
-unindented.
-
-
+*   A multi-paragraph list, unindented.
 
 Simple tight list
 
-* Uno
-* Due
-* Tri
+*   Uno
+*   Due
+*   Tri
 
 A singleton tight list:
 
-* Uno
+*   Uno
 
 A lose list:
 
-* One
+*   One
 
-* Two
+*   Two
 
-* Three
+*   Three
 
 A lose list with paragraphs
 
-* One one one one
+*   One one one one
 
     one one one one
 
-* Two two two two
+*   Two two two two

@@ -18,4 +18,4 @@ three underscores: ___
 
 with spaces: _ _ _
 
-One char: _a_
+One char: *a*

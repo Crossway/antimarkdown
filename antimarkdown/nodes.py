@@ -15,6 +15,22 @@ def escape(text, characters):
     return text
 
 
+def escape_re(text, *regexps):
+    for r in regexps:
+        text = r.sub(ur'\\\1', text)
+    return text
+
+
+def eltext(text, escape_text=True):
+    if text is None:
+        text = u''
+
+    if escape_text:
+        return escape(text, u'`')
+    else:
+        return text
+
+
 WHITESPACE_CP = re.compile(ur'\s+')
 
 
@@ -53,16 +69,21 @@ class Node(collections.deque):
         self.blackboard = blackboard
         
     def __unicode__(self):
-        return (self.text() or u'') + (self.tail() or u'')
+        self.blackboard.setdefault('env', []).append(self.tag)
+        text = self.text()
+        tail = self.tail()
+        self.blackboard['env'].pop()
+
+        return text + tail
 
     def text(self):
         return u'%s%s' % (
-            whitespace(self.el.text or u'').lstrip(),
+            whitespace(eltext(self.el.text)).lstrip(),
             u''.join(unicode(node) for node in self),
             )
 
     def tail(self):
-        tail = self.el.tail or u''
+        tail = eltext(self.el.tail)
         if tail:
             return whitespace(tail)
         else:
@@ -71,22 +92,30 @@ class Node(collections.deque):
 
 class Block(Node):
     def tail(self):
-        return u'\n\n' + whitespace(self.el.tail or u'').lstrip()
+        return u'\n\n' + whitespace(eltext(self.el.tail)).lstrip()
 
 
 class P(Block):
     pass
 
 
+INNER_SQ_LBRACKET_ESCAPE_CP = re.compile(ur'((?<!!)\[)')
+INNER_SQ_RBRACKET_ESCAPE_CP = re.compile(ur'(\](?!\())')
+
+
 class A(Node):
     def text(self):
         el = self.el
         href = el.attrib.get('href')
+        if href and href.startswith(u'mailto:'):
+            href = href[7:]
         if href == el.text:
             return u'<%s>' % href
         else:
             return u"[%(text)s](%(href)s%(title)s)" % {
-                'text': escape(super(A, self).text(), u'[]'),
+                'text': escape_re(super(A, self).text(),
+                                  INNER_SQ_LBRACKET_ESCAPE_CP,
+                                  INNER_SQ_RBRACKET_ESCAPE_CP).rstrip(),
                 'title': (u' "%s"' % escape(el.attrib['title'], u'()')) if 'title' in el.attrib else u'',
                 'href': (u'<%s>' % escape(el.attrib.get('href'), u'()')) if href else u''
                 }
@@ -97,7 +126,7 @@ class PRE(Block):
         self.blackboard['pre'] = True
 
         text = u'%s%s' % (
-            self.el.text or u'',
+            eltext(self.el.text, escape_text=False),
             u''.join(unicode(node) for node in self),
             )
 
@@ -114,14 +143,14 @@ class BLOCKQUOTE(Block):
     def text(self):
         text = super(BLOCKQUOTE, self).text().rstrip()
         lines = [u'> %s' % n for n in text.splitlines()]
-        if lines[0].strip() == u'>':
+        if lines and lines[0].strip() == u'>':
             lines[0] = u''
-        if lines[-1].strip() == u'>':
+        if lines and lines[-1].strip() == u'>':
             lines[-1] = u''
         text = u'\n'.join(lines)
         text = self.NORMALIZE_BLOCKQUOTES_LEADING_CP.sub(ur'\1', text)
         text = self.NORMALIZE_BLOCKQUOTES_TRAILING_CP.sub(u'\n', text)
-        
+        text = text or u'>'  # Just in case it's an empty blockquote...
         return text.rstrip()
 
 
@@ -131,7 +160,8 @@ class OL(Block):
             i = 0
             while True:
                 i += 1
-                yield u'%s. ' % i
+                si = u'%s.' % i
+                yield si + (u' ' * max(4 - len(si), 0))
         self.blackboard.setdefault('li-style', []).append(numbers())
         result = newlines(super(OL, self).text())
         self.blackboard['li-style'].pop()
@@ -140,7 +170,7 @@ class OL(Block):
 
 class UL(Block):
     def text(self):
-        self.blackboard.setdefault('li-style', []).append(u'* ')
+        self.blackboard.setdefault('li-style', []).append(u'*   ')
         result = newlines(super(UL, self).text())
         self.blackboard['li-style'].pop()
         return result
@@ -148,10 +178,10 @@ class UL(Block):
 
 class LI(Block):
     def text(self):
-        li = self.blackboard.get('li-style', [u'* '])[-1]
+        li = self.blackboard.get('li-style', [u'*   '])[-1]
         if hasattr(li, 'next'):
             li = li.next()
-        text = whitespace(self.el.text or u'').lstrip()
+        text = whitespace(eltext(self.el.text)).lstrip()
 
         lines = newlines(u''.join(u'\n' + unicode(node)
                                   if isinstance(node, Block) else unicode(node)
@@ -168,20 +198,20 @@ class LI(Block):
         return newlines(li + text + lines)
 
     def tail(self):
-        return u'\n' + whitespace(self.el.tail or u'').lstrip()
+        return u'\n' + whitespace(eltext(self.el.tail)).lstrip()
 
 
 class CODE(Node):
     def text(self):
         text = u'%s%s' % (
-            self.el.text or u'',
+            eltext(self.el.text, escape_text=False),
             u''.join(unicode(node) for node in self),
             )
         if self.blackboard.get('pre'):
             return text
         else:
             if u'`' in text:
-                return u'``%s``' % text
+                return u'`` %s ``' % text
             else:
                 return u'`%s`' % text
 
@@ -203,9 +233,12 @@ I = EM
 class IMG(Node):
     def text(self):
         el = self.el
-        return u'![%(alt)s](<%(src)s>)' % {
+        title = el.attrib.get('title')
+        return u'![%(alt)s](<%(src)s>%(title)s)%(text)s' % {
             'alt': escape(el.attrib.get('alt', u''), u'[]'),
-            'src': escape(el.attrib.get('src', u''), u'()')}
+            'src': escape(el.attrib.get('src', u''), u'()'),
+            'title': u' "%s"' % escape(title, u'"') if title else u'',
+            'text': super(IMG, self).text()}
 
     def tail(self):
         return super(IMG, self).tail() or u' '
@@ -219,41 +252,52 @@ class HR(Block):
 class DIV(Block):
     def text(self):
         return u'<div>%s%s</div>' % (
-            (self.el.text or u''),
+            (eltext(self.el.text)),
             u''.join(unicode(node) for node in self),
             )
 
     def tail(self):
-        return self.el.tail or u''
+        return eltext(self.el.tail)
 
 
-class H1(Block):
+class Header(Block):
+    def tail(self):
+        return u'\n' + eltext(self.el.tail)
+
+
+class H1(Header):
     def text(self):
         text = super(H1, self).text()
-        return u'\n%s\n%s\n' % (text, len(text) * '=')
+        if len(self.blackboard['env']) > 1:
+            return '\n# %s #' % text
+        else:
+            return u'\n%s\n%s' % (text, len(text) * '=')
 
 
-class H2(Block):
+class H2(Header):
     def text(self):
         text = super(H2, self).text()
-        return u'\n%s\n%s\n' % (text, len(text) * '-')
+        if len(self.blackboard['env']) > 1:
+            return '\n## %s ##' % text
+        else:
+            return u'\n%s\n%s' % (text, len(text) * '-')
 
 
-class H3(Block):
+class H3(Header):
     def text(self):
         return u'\n### %s ###' % super(H3, self).text()
 
 
-class H4(Block):
+class H4(Header):
     def text(self):
         return u'\n### %s ###' % super(H4, self).text()
 
 
-class H5(Block):
+class H5(Header):
     def text(self):
         return u'\n##### %s #####' % super(H5, self).text()
 
 
-class H6(Block):
+class H6(Header):
     def text(self):
         return u'\n###### %s ######' % super(H6, self).text()

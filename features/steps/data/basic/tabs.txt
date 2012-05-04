@@ -1,6 +1,6 @@
-* this is a list item indented with tabs
+*   this is a list item indented with tabs
 
-* this is a list item indented with spaces
+*   this is a list item indented with spaces
 
 Code:
 
