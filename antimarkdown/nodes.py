@@ -219,7 +219,7 @@ class LI(Block):
         if not text:
             lines = lines.lstrip()
 
-        if li_env[-1]:
+        if li_env[-1] and isinstance(self[0], BlockWithSpacing):
             spacer = u'\n\n'
         else:
             spacer = u''

@@ -55,5 +55,6 @@ Feature: The results of the HTML-to-Markdown converter reverse back to HTML.
     | misc/lists4                           |
     | misc/lists5                           |
     | misc/lists7                           |
-
-
+    | misc/lists8                           |
+    | misc/nested-lists                     |
+    | misc/nested-patterns                  |
