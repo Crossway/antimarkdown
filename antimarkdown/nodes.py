@@ -95,8 +95,21 @@ class Block(Node):
         return u'\n\n' + whitespace(eltext(self.el.tail)).lstrip()
 
 
-class P(Block):
-    pass
+class BlockWithSpacing(Block):
+    def __unicode__(self):
+        li_env = self.blackboard.get('li-nested-block')
+        if li_env:
+            li_env[-1] = True
+        return super(Block, self).__unicode__()
+
+
+class P(BlockWithSpacing):
+    def text(self):
+        if self.blackboard.get('li-nested-block'):
+            spacer = u'\n\n'
+        else:
+            spacer = u''
+        return spacer + super(P, self).text()
 
 
 INNER_SQ_LBRACKET_ESCAPE_CP = re.compile(ur'((?<!!)\[)')
@@ -121,7 +134,7 @@ class A(Node):
                 }
 
 
-class PRE(Block):
+class PRE(BlockWithSpacing):
     def text(self):
         self.blackboard['pre'] = True
 
@@ -136,7 +149,7 @@ class PRE(Block):
         return result
 
 
-class BLOCKQUOTE(Block):
+class BLOCKQUOTE(BlockWithSpacing):
     NORMALIZE_BLOCKQUOTES_LEADING_CP = re.compile(ur'(^[^>]*\n)(?: *> *\n)+', re.MULTILINE)
     NORMALIZE_BLOCKQUOTES_TRAILING_CP = re.compile(ur'^(?: *> +\n)+(?! *>)', re.MULTILINE)
     
@@ -154,7 +167,15 @@ class BLOCKQUOTE(Block):
         return text.rstrip()
 
 
-class OL(Block):
+class ListBlock(Block):
+    def tail(self):
+        if len(self.blackboard['env']) > 1:
+            return whitespace(eltext(self.el.tail)).lstrip()
+        else:
+            return super(ListBlock, self).tail()
+
+
+class OL(ListBlock):
     def text(self):
         def numbers():
             i = 0
@@ -168,7 +189,7 @@ class OL(Block):
         return result
 
 
-class UL(Block):
+class UL(ListBlock):
     def text(self):
         self.blackboard.setdefault('li-style', []).append(u'*   ')
         result = newlines(super(UL, self).text())
@@ -178,6 +199,8 @@ class UL(Block):
 
 class LI(Block):
     def text(self):
+        li_env = self.blackboard.setdefault('li-nested-block', [])
+        li_env.append(False)
         li = self.blackboard.get('li-style', [u'*   '])[-1]
         if hasattr(li, 'next'):
             li = li.next()
@@ -195,10 +218,22 @@ class LI(Block):
         lines = u'\n'.join(lines)
         if not text:
             lines = lines.lstrip()
-        return newlines(li + text + lines)
+
+        if li_env[-1]:
+            spacer = u'\n\n'
+        else:
+            spacer = u''
+            
+        return spacer + newlines(li + text + lines)
 
     def tail(self):
-        return u'\n' + whitespace(eltext(self.el.tail)).lstrip()
+        nested_block = self.blackboard.setdefault('li-nested-block', [False]).pop()
+        if nested_block:
+            spacer = u'\n\n'
+        else:
+            spacer = u'\n'
+
+        return spacer + whitespace(eltext(self.el.tail)).lstrip()
 
 
 class CODE(Node):
@@ -262,7 +297,12 @@ class DIV(Block):
 
 class Header(Block):
     def tail(self):
-        return u'\n' + eltext(self.el.tail)
+        in_li = self.blackboard.get('li-nested-block')
+        if in_li:
+            spacer = u''
+        else:
+            spacer = u'\n'
+        return spacer + eltext(self.el.tail)
 
 
 class H1(Header):

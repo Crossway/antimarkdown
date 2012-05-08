@@ -1,11 +1,11 @@
-Feature: An HTML-to-Markdown converter
+Feature: The results of the HTML-to-Markdown converter reverse back to HTML.
 
-  @antimarkdown
-  Scenario Outline: Converting extended markdown to HTML
+  @markdown
+  Scenario Outline: Converting markdown to HTML
     Given I have a <file base name>,
-    When I translate the HTML file to Markdown using antimarkdown
-    Then the resulting Markdown should match the corresponding text in the Markdown file.
-
+    When I translate the Markdown file to HTML using markdown
+    Then the resulting HTML should match the corresponding text in the Markdown file.
+    
   Examples: Basic scenarios
     | file base name                        |
     | basic/amps-and-angle-encoding         |
@@ -45,7 +45,6 @@ Feature: An HTML-to-Markdown converter
     | misc/em-around-links                  |
     | misc/email                            |
     | misc/escaped_links                    |
-    | misc/header-in-lists                  |
     | misc/headers                          |
     | misc/image_in_links                   |
     | misc/image-2                          |
