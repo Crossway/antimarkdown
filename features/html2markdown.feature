@@ -59,3 +59,4 @@ Feature: An HTML-to-Markdown converter
     | misc/lists8                           |
     | misc/nested-lists                     |
     | misc/nested-patterns                  |
+    | crossway/hilite                       |
