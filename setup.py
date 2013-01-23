@@ -16,7 +16,7 @@ setup(
         },
     zip_safe = False,
 
-    version = "0.1",
+    version = "0.1.1",
     description = "HTML to Markdown converter.",
     author = "David Eyk",
     author_email = "deyk@crossway.org",
