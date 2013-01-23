@@ -39,7 +39,7 @@ def build_render_tree(root, domtree):
             current_node = node_class(current_node, domtree, blackboard)
 
             stack.append(domtree)
-            
+
             # Queue children
             for el in reversed(domtree):
                 stack.append(el)

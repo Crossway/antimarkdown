@@ -3,7 +3,7 @@
 """
 from BeautifulSoup import UnicodeDammit
 from lxml import html
-from StringIO import StringIO
+from lxml.builder import E
 
 import handlers
 
@@ -46,6 +46,9 @@ def decode_html(html_string):
 def clean_fragment(subtree, safe_tags=None, safe_attrs=None):
     """Clean an HTML fragment subtree of unsafe tags and attrs.
     """
+    if isinstance(subtree, basestring):
+        return E('p', subtree)
+
     if safe_tags is None:
         safe_tags = default_safe_tags
     if safe_attrs is None:
