@@ -35,7 +35,7 @@ def decode_html(html_string):
     """Given an HTML string fragment, produce a unicode string.
     """
     converted = UnicodeDammit(html_string, isHTML=True)
-    if not converted.unicode:
+    if converted.unicode is None:
         raise UnicodeDecodeError(
             "Failed to detect encoding, tried [%s]",
             ', '.join(converted.triedEncodings))

@@ -7,6 +7,9 @@ from antimarkdown import nodes
 
 
 def render(*domtrees):
+    if not domtrees:
+        return u''
+
     root = nodes.Root()
     for dom in domtrees:
         build_render_tree(root, dom)

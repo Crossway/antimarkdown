@@ -22,6 +22,7 @@ Feature: An HTML-to-Markdown converter
     | basic/markdown-documentation-basics   |
     | basic/markdown-syntax                 |
     | basic/nested-blockquotes              |
+    | basic/newline                         |
     | basic/ordered-and-unordered-list      |
     | basic/strong-and-em-together          |
     | basic/tabs                            |
