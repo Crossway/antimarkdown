@@ -74,7 +74,7 @@ class Node(collections.deque):
         self.el = el
         self.tag = self.__class__.__name__.lower()
         self.blackboard = blackboard
-        
+
     def __unicode__(self):
         self.blackboard.setdefault('env', []).append(self.tag)
         text = self.text()
@@ -87,7 +87,7 @@ class Node(collections.deque):
         return u'%s%s' % (
             whitespace(eltext(self.el.text)).lstrip(),
             u''.join(unicode(node) for node in self),
-            )
+        )
 
     def tail(self):
         tail = eltext(self.el.tail)
@@ -138,7 +138,7 @@ class A(Node):
                                   INNER_SQ_RBRACKET_ESCAPE_CP).rstrip(),
                 'title': (u' "%s"' % escape(el.attrib['title'], u'()')) if 'title' in el.attrib else u'',
                 'href': (u'<%s>' % escape(el.attrib.get('href'), u'()')) if href else u''
-                }
+            }
 
 
 class PRE(BlockWithSpacing):
@@ -148,7 +148,7 @@ class PRE(BlockWithSpacing):
         text = u'%s%s' % (
             eltext(self.el.text, escape_text=False),
             u''.join(unicode(node) for node in self),
-            )
+        )
 
         result = u'\n'.join(u'    %s' % n for n in text.splitlines())
 
@@ -159,7 +159,7 @@ class PRE(BlockWithSpacing):
 class BLOCKQUOTE(BlockWithSpacing):
     NORMALIZE_BLOCKQUOTES_LEADING_CP = re.compile(ur'(^[^>]*\n)(?: *> *\n)+', re.MULTILINE)
     NORMALIZE_BLOCKQUOTES_TRAILING_CP = re.compile(ur'^(?: *> +\n)+(?! *>)', re.MULTILINE)
-    
+
     def text(self):
         text = super(BLOCKQUOTE, self).text().rstrip()
         lines = [u'> %s' % n for n in text.splitlines()]
@@ -230,7 +230,7 @@ class LI(Block):
             spacer = u'\n\n'
         else:
             spacer = u''
-            
+
         return spacer + newlines(li + text + lines)
 
     def tail(self):
@@ -248,7 +248,7 @@ class CODE(Node):
         text = u'%s%s' % (
             eltext(self.el.text, escape_text=False),
             u''.join(unicode(node) for node in self),
-            )
+        )
         if self.blackboard.get('pre'):
             return text
         else:
@@ -290,7 +290,7 @@ class SPAN(Node):
             return u'%%[%(text)s](%(hex)s)' % {
                 'text': super(SPAN, self).text(),
                 'hex': hex_color[hex_value],
-                }
+            }
 
 
 class IMG(Node):
@@ -317,7 +317,7 @@ class DIV(Block):
         return u'<div>%s%s</div>' % (
             (eltext(self.el.text)),
             u''.join(unicode(node) for node in self),
-            )
+        )
 
     def tail(self):
         return eltext(self.el.tail)
