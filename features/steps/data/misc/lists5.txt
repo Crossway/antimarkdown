@@ -4,5 +4,5 @@ A paragraph
 
 > This is a more difficult case With a list item inside the quote
 >
-> -   Alpha
-> -   Beta Etc.
+> - Alpha
+> - Beta Etc.

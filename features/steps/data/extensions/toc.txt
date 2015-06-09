@@ -276,9 +276,9 @@ is equivalent to:
 
 and:
 
-    -   Red
-    -   Green
-    -   Blue
+    - Red
+    - Green
+    - Blue
 
 Ordered lists use numbers followed by periods:
 
