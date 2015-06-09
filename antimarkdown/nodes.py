@@ -197,7 +197,7 @@ class OL(ListBlock):
 
 
 class UL(ListBlock):
-    style = u'-   '
+    style = u'- '
 
     def text(self):
         self.blackboard.setdefault('li-style', []).append(UL.style)
@@ -221,8 +221,8 @@ class LI(Block):
                          ).splitlines()
 
         if lines:
-            space = u' ' * len(li)
-            lines[1:] = [u'%s%s' % (space, ln) for ln in lines[1:]]
+            indent = u' ' * 4
+            lines[1:] = [u'%s%s' % (indent, ln) for ln in lines[1:]]
 
         lines = u'\n'.join(lines)
         if not text:
