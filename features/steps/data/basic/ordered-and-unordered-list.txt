@@ -3,49 +3,49 @@ Unordered
 
 Asterisks tight:
 
-*   asterisk 1
-*   asterisk 2
-*   asterisk 3
+- asterisk 1
+- asterisk 2
+- asterisk 3
 
 Asterisks loose:
 
-*   asterisk 1
+- asterisk 1
 
-*   asterisk 2
+- asterisk 2
 
-*   asterisk 3
+- asterisk 3
 
 ---
 
 Pluses tight:
 
-*   Plus 1
-*   Plus 2
-*   Plus 3
+- Plus 1
+- Plus 2
+- Plus 3
 
 Pluses loose:
 
-*   Plus 1
+- Plus 1
 
-*   Plus 2
+- Plus 2
 
-*   Plus 3
+- Plus 3
 
 ---
 
 Minuses tight:
 
-*   Minus 1
-*   Minus 2
-*   Minus 3
+- Minus 1
+- Minus 2
+- Minus 3
 
 Minuses loose:
 
-*   Minus 1
+- Minus 1
 
-*   Minus 2
+- Minus 2
 
-*   Minus 3
+- Minus 3
 
 
 Ordered
@@ -93,18 +93,18 @@ Multiple paragraphs:
 Nested
 ------
 
-*   Tab
-    *   Tab
-        *   Tab
-            *   Tab
+- Tab
+    - Tab
+        - Tab
+            - Tab
 
 Here's another:
 
 1.  First
 2.  Second:
-    *   Fee
-    *   Fie
-    *   Foe
+    - Fee
+    - Fie
+    - Foe
 3.  Third
 
 Same thing but with paragraphs:
@@ -113,8 +113,8 @@ Same thing but with paragraphs:
 
 2.  Second:
 
-    *   Fee
-    *   Fie
-    *   Foe
+    - Fee
+    - Fie
+    - Foe
 
 3.  Third

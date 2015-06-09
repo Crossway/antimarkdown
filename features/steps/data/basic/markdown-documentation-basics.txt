@@ -106,9 +106,9 @@ this:
 
 and this:
 
-    -   Candy.
-    -   Gum.
-    -   Booze.
+    - Candy.
+    - Gum.
+    - Booze.
 
 all produce the same output:
 

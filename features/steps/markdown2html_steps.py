@@ -40,7 +40,3 @@ def step_HTML_matches_MD(context):
                              [n.encode('ascii', 'replace')
                               for n in html.splitlines()],
                              fromfile='Got', tofile='Expected'))
-    # assert context.translated_html_text == html, '\nDifferences:\n' + '\n'.join(
-    #     difflib.context_diff([repr(n) for n in context.translated_html_text.splitlines()],
-    #                          [repr(n) for n in html.splitlines()],
-    #                          fromfile='Got', tofile='Expected'))
