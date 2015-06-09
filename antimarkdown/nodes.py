@@ -197,7 +197,7 @@ class OL(ListBlock):
 
 
 class UL(ListBlock):
-    style = u'*   '
+    style = u'-   '
 
     def text(self):
         self.blackboard.setdefault('li-style', []).append(UL.style)
