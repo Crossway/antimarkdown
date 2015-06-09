@@ -197,8 +197,10 @@ class OL(ListBlock):
 
 
 class UL(ListBlock):
+    style = u'*   '
+
     def text(self):
-        self.blackboard.setdefault('li-style', []).append(u'*   ')
+        self.blackboard.setdefault('li-style', []).append(UL.style)
         result = newlines(super(UL, self).text())
         self.blackboard['li-style'].pop()
         return result
@@ -208,7 +210,7 @@ class LI(Block):
     def text(self):
         li_env = self.blackboard.setdefault('li-nested-block', [])
         li_env.append(False)
-        li = self.blackboard.get('li-style', [u'*   '])[-1]
+        li = self.blackboard.get('li-style', [UL.style])[-1]
         if hasattr(li, 'next'):
             li = li.next()
         text = whitespace(eltext(self.el.text)).lstrip()
