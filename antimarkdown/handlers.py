@@ -16,7 +16,7 @@ def render(*domtrees):
     lines = unicode(root).rstrip().splitlines()
 
     # Strip leading empty lines
-    while not lines[0].strip():
+    while lines and not lines[0].strip():
         lines.pop(0)
 
     return nodes.normalize(u'\n'.join(lines))
