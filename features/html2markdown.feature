@@ -36,6 +36,7 @@ Feature: An HTML-to-Markdown converter
     | misc/backtick-escape                  |
     | misc/bidi                             |
     | misc/blank-block-quote                |
+    | misc/blank-para-with-br               |
     | misc/blockquote-below-paragraph       |
     | misc/blockquote-hr                    |
     | misc/blockquote                       |
