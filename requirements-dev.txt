@@ -1,0 +1,4 @@
+behave==1.2.5
+html5tidy==1.0
+html5lib==0.9999999  # required version for html5tidy
+Markdown==2.5.2  # FIXME: 2.6.8 breaks tests
