@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - "2.7"
+
+install:
+  - "pip install -r requirements-dev.txt"
+  - "python setup.py develop"
+
+script: "behave"
+
+notifications:
+  email: false
+  hipchat:
+    on_success: change
+    on_failure: always
+    notify: true
+    rooms:
+      secure: FLwVfALWPitg7tH0j/qzYVLpQiS5zvcZI2CUdHzvNnU8fy7Aj7K/310LyYZkS4FFgR2PjU6pD0T0jC4tAFUKBxL4AUMSlpL+wfYD0y3ifwkMI4NW5K2onJV1rcrgCagje0d0atFY/lA6KoBs3ZVzBNEQwWdogc/Rtg5xp9X+aNU=
