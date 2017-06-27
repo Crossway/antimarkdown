@@ -15,7 +15,7 @@ setup(
         '': ['*.txt', '*.html'],
     },
     zip_safe=False,
-    version="0.2.2",
+    version="0.3.6",
     description="HTML to Markdown converter.",
     long_description=open(README).read(),
     author="David Eyk",
