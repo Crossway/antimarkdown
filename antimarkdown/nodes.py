@@ -55,7 +55,7 @@ def normalize(markdown_text):
 
 
 class Root(collections.deque):
-    def __unicode__(self):
+    def __str__(self):
         return normalize(''.join(str(node) for node in self))
 
 
@@ -68,7 +68,7 @@ class Node(collections.deque):
         self.tag = self.__class__.__name__.lower()
         self.blackboard = blackboard
 
-    def __unicode__(self):
+    def __str__(self):
         self.blackboard.setdefault('env', []).append(self.tag)
         text = self.text()
         tail = self.tail()
@@ -96,11 +96,11 @@ class Block(Node):
 
 
 class BlockWithSpacing(Block):
-    def __unicode__(self):
+    def __str__(self):
         li_env = self.blackboard.get('li-nested-block')
         if li_env:
             li_env[-1] = True
-        return super(Block, self).__unicode__()
+        return super(Block, self).__str__()
 
 
 class P(BlockWithSpacing):
