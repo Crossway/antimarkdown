@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """html2markdown_steps -- feature step implementations for the antimarkdown HTML-to-Markdown translator.
 """
-import codecs
 import difflib
 from behave import *
 from lxml import html
@@ -25,14 +24,14 @@ def normalize_html(html_text):
 @when('I translate the Markdown file to HTML using markdown')
 def step_translate_markdown_to_HTML(context):
     import markdown
-    with codecs.open(context.markdown_path, encoding='utf-8') as fi:
+    with open(context.markdown_path, encoding='utf-8') as fi:
         md = context.markdown_text = fi.read()
     context.translated_html_text = normalize_html(markdown.markdown(md))
 
 
 @then('the resulting HTML should match the corresponding text in the Markdown file.')
 def step_HTML_matches_MD(context):
-    with codecs.open(context.html_path, encoding='utf-8') as fi:
+    with open(context.html_path, encoding='utf-8') as fi:
         html = context.html_text = normalize_html(fi.read())
 
     assert context.translated_html_text == html, '\nDifferences:\n' + '\n'.join(
