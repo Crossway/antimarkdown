@@ -13,16 +13,16 @@ from antimarkdown import nodes
 
 
 def normalize_html(html_text):
-    html_text = u'\n'.join(html.tostring(el, encoding=unicode)
+    html_text = '\n'.join(html.tostring(el, encoding=str)
                            for el in antimarkdown.parse_fragments(html_text))
     tidied = tidy(
-        u'\n'.join(line.strip()
-                   for line in nodes.whitespace(html_text.strip()).replace(u'>', u'>\n').splitlines()),
+        '\n'.join(line.strip()
+                   for line in nodes.whitespace(html_text.strip()).replace('>', '>\n').splitlines()),
         pretty_print=True)
     return tidied.decode('utf-8')
 
 
-@when(u'I translate the Markdown file to HTML using markdown')
+@when('I translate the Markdown file to HTML using markdown')
 def step_translate_markdown_to_HTML(context):
     import markdown
     with codecs.open(context.markdown_path, encoding='utf-8') as fi:
@@ -30,7 +30,7 @@ def step_translate_markdown_to_HTML(context):
     context.translated_html_text = normalize_html(markdown.markdown(md))
 
 
-@then(u'the resulting HTML should match the corresponding text in the Markdown file.')
+@then('the resulting HTML should match the corresponding text in the Markdown file.')
 def step_HTML_matches_MD(context):
     with codecs.open(context.html_path, encoding='utf-8') as fi:
         html = context.html_text = normalize_html(fi.read())

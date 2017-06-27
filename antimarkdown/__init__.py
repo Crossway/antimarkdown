@@ -33,7 +33,7 @@ def parse_fragments(html_string, safe_tags=None, safe_attrs=None):
 def clean_fragment(subtree, safe_tags=None, safe_attrs=None):
     """Clean an HTML fragment subtree of unsafe tags and attrs.
     """
-    if isinstance(subtree, basestring):
+    if isinstance(subtree, str):
         return E('p', subtree)
 
     if safe_tags is None:
