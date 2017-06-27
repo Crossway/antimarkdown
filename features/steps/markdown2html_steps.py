@@ -12,7 +12,13 @@ from antimarkdown import nodes
 
 def normalize_html(html_text):
     html_text = '\n'.join(html.tostring(el, encoding=str)
-                           for el in antimarkdown.parse_fragments(html_text))
+                          for el in antimarkdown.parse_fragments(html_text))
+
+    html_text = '\n'.join(line.strip()
+                          for line in (nodes.whitespace(html_text.strip())
+                                            .replace('>', '>\n')
+                                            .splitlines()))
+
     return BeautifulSoup(html_text).prettify()
 
 
