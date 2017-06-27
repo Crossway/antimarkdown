@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """antimarkdown -- convert Markdown to HTML.
 """
-
-from bs4 import BeautifulSoup
 from lxml import html
 from lxml.builder import E
 from . import handlers
