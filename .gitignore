@@ -31,3 +31,4 @@ build/
 share/
 man/
 dist/
+venv/
