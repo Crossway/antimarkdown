@@ -8,13 +8,6 @@ corresponding tag in all upper-case. Nodes should produce inner text
 import re
 import collections
 
-hex_color = collections.defaultdict(lambda: 'none')
-try:
-    import mdx_hilite
-    hex_color.update((h, c) for c, h in mdx_hilite.color_hex.iteritems())
-except ImportError:
-    pass
-
 
 def escape(text, characters):
     for c in characters:
@@ -281,16 +274,7 @@ background_color_cp = re.compile(r'background-color\s*:\s*(#[a-f0-9]+);')
 
 
 class SPAN(Node):
-    def text(self):
-        match = background_color_cp.findall(self.el.attrib.get('style', ''))
-        hex_value = match[0] if match else None
-        if hex_value is None:
-            return super(SPAN, self).text()
-        else:
-            return u'%%[%(text)s](%(hex)s)' % {
-                'text': super(SPAN, self).text(),
-                'hex': hex_color[hex_value],
-            }
+    pass
 
 
 class IMG(Node):
