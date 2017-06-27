@@ -19,7 +19,7 @@ setup(
     },
     zip_safe = False,
 
-    version = "1.0.0",
+    version = "1.0.1",
     description = "HTML to Markdown converter.",
     long_description = open(README).read(),
     author = "David Eyk",
@@ -31,7 +31,7 @@ setup(
         'Environment :: Console',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
