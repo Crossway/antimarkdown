@@ -10,12 +10,9 @@ README = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')
 setup(
     name = "antimarkdown",
     packages = ['antimarkdown'],
-    install_requires = [
-        'lxml',
-        'beautifulsoup4==4.6.0',
-    ],
 
     package_data = {
+    install_requires=['lxml'],
         '': ['*.txt', '*.html'],
     },
     zip_safe = False,
