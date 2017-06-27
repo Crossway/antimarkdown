@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """antimarkdown -- convert Markdown to HTML.
 """
-from BeautifulSoup import UnicodeDammit
 from lxml import html
 from lxml.builder import E
 
@@ -25,22 +24,10 @@ def to_markdown(html_string, safe_tags=None, safe_attrs=None):
 def parse_fragments(html_string, safe_tags=None, safe_attrs=None):
     """Parse HTML fragments from the given HTML fragment string.
     """
-    for f in html.fragments_fromstring(decode_html(html_string)):
+    for f in html.fragments_fromstring(html_string):
         cf = clean_fragment(f, safe_tags=safe_tags, safe_attrs=safe_attrs)
         if cf is not None:
             yield cf
-
-
-def decode_html(html_string):
-    """Given an HTML string fragment, produce a unicode string.
-    """
-    converted = UnicodeDammit(html_string, isHTML=True)
-    if converted.unicode is None:
-        raise UnicodeDecodeError(
-            "Failed to detect encoding, tried [%s]",
-            ', '.join(converted.triedEncodings))
-    # print converted.originalEncoding
-    return converted.unicode
 
 
 def clean_fragment(subtree, safe_tags=None, safe_attrs=None):
