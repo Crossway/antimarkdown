@@ -63,7 +63,7 @@ def normalize(markdown_text):
 
 class Root(collections.deque):
     def __unicode__(self):
-        return normalize(''.join(unicode(node) for node in self))
+        return normalize(''.join(str(node) for node in self))
 
 
 class Node(collections.deque):
@@ -86,7 +86,7 @@ class Node(collections.deque):
     def text(self):
         return '%s%s' % (
             whitespace(eltext(self.el.text)).lstrip(),
-            ''.join(unicode(node) for node in self),
+            ''.join(str(node) for node in self),
         )
 
     def tail(self):
@@ -147,7 +147,7 @@ class PRE(BlockWithSpacing):
 
         text = '%s%s' % (
             eltext(self.el.text, escape_text=False),
-            ''.join(unicode(node) for node in self),
+            ''.join(str(node) for node in self),
         )
 
         result = '\n'.join('    %s' % n for n in text.splitlines())
@@ -213,8 +213,8 @@ class LI(Block):
             li = li.next()
         text = whitespace(eltext(self.el.text)).lstrip()
 
-        lines = newlines(''.join('\n' + unicode(node)
-                                  if isinstance(node, Block) else unicode(node)
+        lines = newlines(''.join('\n' + str(node)
+                                  if isinstance(node, Block) else str(node)
                                   for node in self)
                          ).splitlines()
 
@@ -247,7 +247,7 @@ class CODE(Node):
     def text(self):
         text = '%s%s' % (
             eltext(self.el.text, escape_text=False),
-            ''.join(unicode(node) for node in self),
+            ''.join(str(node) for node in self),
         )
         if self.blackboard.get('pre'):
             return text
@@ -316,7 +316,7 @@ class DIV(Block):
     def text(self):
         return '<div>%s%s</div>' % (
             (eltext(self.el.text)),
-            ''.join(unicode(node) for node in self),
+            ''.join(str(node) for node in self),
         )
 
     def tail(self):
