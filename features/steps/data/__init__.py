@@ -8,7 +8,7 @@ except ImportError:
     raise ImportError, "The nose testing framework is required to run " \
                        "Python-Markdown tests. Run `easy_install nose` " \
                        "to install the latest version."
-import util 
+import util
 from plugins import HtmlOutput, Markdown
 try:
     import tidy
@@ -60,7 +60,7 @@ def get_args(file, config):
 
 def normalize(text):
     """ Normalize whitespace for a string of html using tidy. """
-    return str(tidy.parseString(text.encode('utf-8', 'xmlcharrefreplace'), 
+    return str(tidy.parseString(text.encode('utf-8', 'xmlcharrefreplace'),
                                     drop_empty_paras=0,
                                     fix_backslash=0,
                                     fix_bad_comments=0,
@@ -86,7 +86,7 @@ class CheckSyntax(object):
             raise nose.plugins.skip.SkipTest, 'Test skipped per config.'
         input_file = file + config.get(cfg_section, 'input_ext')
         input = codecs.open(input_file, encoding="utf-8").read()
-        output_file = file + config.get(cfg_section, 'output_ext') 
+        output_file = file + config.get(cfg_section, 'output_ext')
         expected_output = codecs.open(output_file, encoding="utf-8").read()
         output = markdown.markdown(input, **get_args(file, config))
         if tidy and config.get(cfg_section, 'normalize'):
@@ -97,9 +97,9 @@ class CheckSyntax(object):
             # Tidy is not available. Skip this test.
             raise nose.plugins.skip.SkipTest, 'Test skipped. Tidy not available in system.'
         diff = [l for l in difflib.unified_diff(expected_output.splitlines(True),
-                                                output.splitlines(True), 
-                                                output_file, 
-                                                'actual_output.html', 
+                                                output.splitlines(True),
+                                                output_file,
+                                                'actual_output.html',
                                                 n=3)]
         if diff:
             raise util.MarkdownSyntaxError('Output from "%s" failed to match expected '
@@ -124,11 +124,11 @@ def generate(file, config):
         print 'Skipping:', file
         return None
     input_file = file + config.get(cfg_section, 'input_ext')
-    output_file = file + config.get(cfg_section, 'output_ext') 
+    output_file = file + config.get(cfg_section, 'output_ext')
     if not os.path.isfile(output_file) or \
             os.path.getmtime(output_file) < os.path.getmtime(input_file):
         print 'Generating:', file
-        markdown.markdownFromFile(input=input_file, output=output_file, 
+        markdown.markdownFromFile(input=input_file, output=output_file,
                                   encoding='utf-8', **get_args(file, config))
     else:
         print 'Already up-to-date:', file

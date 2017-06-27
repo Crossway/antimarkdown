@@ -25,17 +25,10 @@ def to_markdown(html_string, safe_tags=None, safe_attrs=None):
 def parse_fragments(html_string, safe_tags=None, safe_attrs=None):
     """Parse HTML fragments from the given HTML fragment string.
     """
-    for f in html.fragments_fromstring(decode_html(html_string)):
+    for f in html.fragments_fromstring(html_string):
         cf = clean_fragment(f, safe_tags=safe_tags, safe_attrs=safe_attrs)
         if cf is not None:
             yield cf
-
-
-def decode_html(html_string):
-    """Given an HTML string fragment, produce a unicode string.
-    """
-    soup = BeautifulSoup(html_string)
-    return str(soup, 'utf-8')
 
 
 def clean_fragment(subtree, safe_tags=None, safe_attrs=None):

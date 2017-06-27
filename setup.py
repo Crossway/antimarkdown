@@ -8,22 +8,20 @@ README = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'README.rst')
 
 
 setup(
-    name = "antimarkdown",
-    packages = ['antimarkdown'],
-
-    package_data = {
+    name="antimarkdown",
+    packages=['antimarkdown'],
     install_requires=['lxml'],
+    package_data={
         '': ['*.txt', '*.html'],
     },
-    zip_safe = False,
-
-    version = "0.2.1",
-    description = "HTML to Markdown converter.",
-    long_description = open(README).read(),
-    author = "David Eyk",
-    author_email = "deyk@crossway.org",
-    url = "http://github.com/Crossway/antimarkdown/",
-    license = 'BSD',
+    zip_safe=False,
+    version="0.2.2",
+    description="HTML to Markdown converter.",
+    long_description=open(README).read(),
+    author="David Eyk",
+    author_email="deyk@crossway.org",
+    url="http://github.com/Crossway/antimarkdown/",
+    license='BSD',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
