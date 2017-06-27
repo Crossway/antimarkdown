@@ -3,7 +3,6 @@
 """
 from lxml import html
 from lxml.builder import E
-from . import handlers
 
 
 default_safe_tags = set('p blockquote i em strong b u a h1 h2 h3 h4 h5 h6 hr pre code div br img ul ol li span'.split())
@@ -13,11 +12,7 @@ default_safe_attrs = set('href src alt style title'.split())
 def to_markdown(html_string, safe_tags=None, safe_attrs=None):
     """Convert the given HTML text fragment to Markdown.
     """
-    # out = StringIO()
-    # for f in parse_fragments(html_string, safe_tags=None, safe_attrs=None):
-    #     handlers.process_tag_events(f, out)
-    # return normalize(out.getvalue())
-    return handlers.render(*parse_fragments(html_string, safe_tags))
+    return "FIXME"
 
 
 def parse_fragments(html_string, safe_tags=None, safe_attrs=None):
