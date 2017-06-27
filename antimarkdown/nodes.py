@@ -203,7 +203,7 @@ class LI(Block):
         li_env.append(False)
         li = self.blackboard.get('li-style', ['*   '])[-1]
         if hasattr(li, 'next'):
-            li = li.next()
+            li = next(li)
         text = whitespace(eltext(self.el.text)).lstrip()
 
         lines = newlines(''.join('\n' + str(node)
