@@ -42,28 +42,28 @@ WHITESPACE_CP = re.compile(r'\s+')
 
 
 def whitespace(text):
-    return WHITESPACE_CP.sub(' ', text.replace(' ', ' '))
+    return WHITESPACE_CP.sub(' ', text.replace('\n', ' '))
 
 
-NEWLINES_CP = re.compile('  +', re.MULTILINE)
+NEWLINES_CP = re.compile('\n\n+', re.MULTILINE)
 
 
 def newlines(text):
-    return NEWLINES_CP.sub('  ', text)
+    return NEWLINES_CP.sub('\n\n', text)
 
 
-NORMALIZE_NEWLINES_CP = re.compile(r'  +(?![^ ]+ [-=]|#)', re.MULTILINE)
+NORMALIZE_NEWLINES_CP = re.compile(r'\n\n+(?![^\n]+\n[-=]|#)', re.MULTILINE)
 
 
 def normalize(markdown_text):
     norm = markdown_text
-    norm = NORMALIZE_NEWLINES_CP.sub('  ', norm)
-    return ' '.join(n.rstrip() for n in norm.splitlines())
+    norm = NORMALIZE_NEWLINES_CP.sub('\n\n', norm)
+    return '\n'.join(n.rstrip() for n in norm.splitlines())
 
 
 class Root(collections.deque):
     def __unicode__(self):
-        return normalize(''.join(str(node) for node in self))
+        return normalize(''.join(unicode(node) for node in self))
 
 
 class Node(collections.deque):
@@ -86,7 +86,7 @@ class Node(collections.deque):
     def text(self):
         return '%s%s' % (
             whitespace(eltext(self.el.text)).lstrip(),
-            ''.join(str(node) for node in self),
+            ''.join(unicode(node) for node in self),
         )
 
     def tail(self):
@@ -99,7 +99,7 @@ class Node(collections.deque):
 
 class Block(Node):
     def tail(self):
-        return '  ' + whitespace(eltext(self.el.tail)).lstrip()
+        return '\n\n' + whitespace(eltext(self.el.tail)).lstrip()
 
 
 class BlockWithSpacing(Block):
@@ -113,7 +113,7 @@ class BlockWithSpacing(Block):
 class P(BlockWithSpacing):
     def text(self):
         if self.blackboard.get('li-nested-block'):
-            spacer = '  '
+            spacer = '\n\n'
         else:
             spacer = ''
         return spacer + super(P, self).text()
@@ -132,7 +132,7 @@ class A(Node):
         if href == el.text:
             return '<%s>' % href
         else:
-            return "[%(text)s](%(href)s%(title)s)" % {
+            return u"[%(text)s](%(href)s%(title)s)" % {
                 'text': escape_re(super(A, self).text(),
                                   INNER_SQ_LBRACKET_ESCAPE_CP,
                                   INNER_SQ_RBRACKET_ESCAPE_CP).rstrip(),
@@ -147,18 +147,18 @@ class PRE(BlockWithSpacing):
 
         text = '%s%s' % (
             eltext(self.el.text, escape_text=False),
-            ''.join(str(node) for node in self),
+            ''.join(unicode(node) for node in self),
         )
 
-        result = ' '.join('    %s' % n for n in text.splitlines())
+        result = '\n'.join('    %s' % n for n in text.splitlines())
 
         del self.blackboard['pre']
         return result
 
 
 class BLOCKQUOTE(BlockWithSpacing):
-    NORMALIZE_BLOCKQUOTES_LEADING_CP = re.compile(r'(^[^>]* )(?: *> * )+', re.MULTILINE)
-    NORMALIZE_BLOCKQUOTES_TRAILING_CP = re.compile(r'^(?: *> + )+(?! *>)', re.MULTILINE)
+    NORMALIZE_BLOCKQUOTES_LEADING_CP = re.compile(r'(^[^>]*\n)(?: *> *\n)+', re.MULTILINE)
+    NORMALIZE_BLOCKQUOTES_TRAILING_CP = re.compile(r'^(?: *> +\n)+(?! *>)', re.MULTILINE)
 
     def text(self):
         text = super(BLOCKQUOTE, self).text().rstrip()
@@ -167,9 +167,9 @@ class BLOCKQUOTE(BlockWithSpacing):
             lines[0] = ''
         if lines and lines[-1].strip() == '>':
             lines[-1] = ''
-        text = ' '.join(lines)
+        text = '\n'.join(lines)
         text = self.NORMALIZE_BLOCKQUOTES_LEADING_CP.sub(r'\1', text)
-        text = self.NORMALIZE_BLOCKQUOTES_TRAILING_CP.sub(' ', text)
+        text = self.NORMALIZE_BLOCKQUOTES_TRAILING_CP.sub('\n', text)
         text = text or '>'  # Just in case it's an empty blockquote...
         return text.rstrip()
 
@@ -213,21 +213,21 @@ class LI(Block):
             li = li.next()
         text = whitespace(eltext(self.el.text)).lstrip()
 
-        lines = newlines(''.join(' ' + str(node)
-                         if isinstance(node, Block) else str(node)
-                         for node in self)
+        lines = newlines(''.join('\n' + unicode(node)
+                                  if isinstance(node, Block) else unicode(node)
+                                  for node in self)
                          ).splitlines()
 
         if lines:
             space = ' ' * len(li)
             lines[1:] = ['%s%s' % (space, ln) for ln in lines[1:]]
 
-        lines = ' '.join(lines)
+        lines = '\n'.join(lines)
         if not text:
             lines = lines.lstrip()
 
         if li_env[-1] and isinstance(self[0], BlockWithSpacing):
-            spacer = '  '
+            spacer = '\n\n'
         else:
             spacer = ''
 
@@ -236,9 +236,9 @@ class LI(Block):
     def tail(self):
         nested_block = self.blackboard.setdefault('li-nested-block', [False]).pop()
         if nested_block:
-            spacer = '  '
+            spacer = '\n\n'
         else:
-            spacer = ' '
+            spacer = '\n'
 
         return spacer + whitespace(eltext(self.el.tail)).lstrip()
 
@@ -247,7 +247,7 @@ class CODE(Node):
     def text(self):
         text = '%s%s' % (
             eltext(self.el.text, escape_text=False),
-            ''.join(str(node) for node in self),
+            ''.join(unicode(node) for node in self),
         )
         if self.blackboard.get('pre'):
             return text
@@ -262,14 +262,12 @@ class STRONG(Node):
     def text(self):
         return '**%s**' % super(STRONG, self).text()
 
-
 B = STRONG
 
 
 class EM(Node):
     def text(self):
         return '*%s*' % super(EM, self).text()
-
 
 I = EM
 
@@ -318,7 +316,7 @@ class DIV(Block):
     def text(self):
         return '<div>%s%s</div>' % (
             (eltext(self.el.text)),
-            ''.join(str(node) for node in self),
+            ''.join(unicode(node) for node in self),
         )
 
     def tail(self):
@@ -331,7 +329,7 @@ class Header(Block):
         if in_li:
             spacer = ''
         else:
-            spacer = ' '
+            spacer = '\n'
         return spacer + eltext(self.el.tail)
 
 
@@ -339,35 +337,35 @@ class H1(Header):
     def text(self):
         text = super(H1, self).text()
         if len(self.blackboard['env']) > 1:
-            return ' # %s #' % text
+            return '\n# %s #' % text
         else:
-            return ' %s %s' % (text, len(text) * '=')
+            return '\n%s\n%s' % (text, len(text) * '=')
 
 
 class H2(Header):
     def text(self):
         text = super(H2, self).text()
         if len(self.blackboard['env']) > 1:
-            return ' ## %s ##' % text
+            return '\n## %s ##' % text
         else:
-            return ' %s %s' % (text, len(text) * '-')
+            return '\n%s\n%s' % (text, len(text) * '-')
 
 
 class H3(Header):
     def text(self):
-        return ' ### %s ###' % super(H3, self).text()
+        return '\n### %s ###' % super(H3, self).text()
 
 
 class H4(Header):
     def text(self):
-        return ' ### %s ###' % super(H4, self).text()
+        return '\n### %s ###' % super(H4, self).text()
 
 
 class H5(Header):
     def text(self):
-        return ' ##### %s #####' % super(H5, self).text()
+        return '\n##### %s #####' % super(H5, self).text()
 
 
 class H6(Header):
     def text(self):
-        return ' ###### %s ######' % super(H6, self).text()
+        return '\n###### %s ######' % super(H6, self).text()
