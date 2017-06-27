@@ -12,7 +12,7 @@ setup(
     packages = ['antimarkdown'],
     install_requires = [
         'lxml',
-        'BeautifulSoup',
+        'beautifulsoup4==4.6.0',
     ],
 
     package_data = {
