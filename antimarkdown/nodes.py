@@ -208,8 +208,8 @@ class LI(Block):
         text = whitespace(eltext(self.el.text)).lstrip()
 
         lines = newlines(''.join('\n' + str(node)
-                                  if isinstance(node, Block) else str(node)
-                                  for node in self)
+                                 if isinstance(node, Block) else str(node)
+                                 for node in self)
                          ).splitlines()
 
         if lines:
