@@ -5,8 +5,9 @@ Node classes match up to HTML elements, and should be named after the
 corresponding tag in all upper-case. Nodes should produce inner text
 (including children) and tail text (not siblings).
 """
-import re
 import collections
+import inspect
+import re
 
 
 def escape(text, characters):
@@ -202,7 +203,7 @@ class LI(Block):
         li_env = self.blackboard.setdefault('li-nested-block', [])
         li_env.append(False)
         li = self.blackboard.get('li-style', ['*   '])[-1]
-        if hasattr(li, 'next'):
+        if inspect.isgenerator(li):
             li = next(li)
         text = whitespace(eltext(self.el.text)).lstrip()
 
