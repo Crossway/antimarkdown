@@ -8,18 +8,18 @@ from antimarkdown import nodes
 
 def render(*domtrees):
     if not domtrees:
-        return u''
+        return ''
 
     root = nodes.Root()
     for dom in domtrees:
         build_render_tree(root, dom)
-    lines = unicode(root).rstrip().splitlines()
+    lines = str(root).rstrip().splitlines()
 
     # Strip leading empty lines
     while lines and not lines[0].strip():
         lines.pop(0)
 
-    return nodes.normalize(u'\n'.join(lines))
+    return nodes.normalize('\n'.join(lines))
 
 
 def build_render_tree(root, domtree):

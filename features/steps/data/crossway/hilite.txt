@@ -1,9 +1,0 @@
-%[This text should be highlit in blue](blue)
-
-%[This text has [inner] square braces](blue)
-
-%[This text has (inner) parentheses](blue)
-
-%[This text has both (inner parentheses) [inner braces]](blue)
-
-%[This text has both [inner braces] (inner parentheses)](blue)
