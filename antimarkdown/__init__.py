@@ -4,7 +4,7 @@
 from lxml import html
 from lxml.builder import E
 
-import handlers
+from . import handlers
 
 
 default_safe_tags = set('p blockquote i em strong b u a h1 h2 h3 h4 h5 h6 hr pre code div br img ul ol li span'.split())
