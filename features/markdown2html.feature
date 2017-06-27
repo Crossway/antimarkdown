@@ -5,7 +5,7 @@ Feature: The results of the HTML-to-Markdown converter reverse back to HTML.
     Given I have a <file base name>,
     When I translate the Markdown file to HTML using markdown
     Then the resulting HTML should match the corresponding text in the Markdown file.
-    
+
   Examples: Basic scenarios
     | file base name                        |
     | basic/amps-and-angle-encoding         |

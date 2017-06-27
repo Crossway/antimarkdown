@@ -13,10 +13,6 @@ default_safe_attrs = set('href src alt style title'.split())
 def to_markdown(html_string, safe_tags=None, safe_attrs=None):
     """Convert the given HTML text fragment to Markdown.
     """
-    # out = StringIO()
-    # for f in parse_fragments(html_string, safe_tags=None, safe_attrs=None):
-    #     handlers.process_tag_events(f, out)
-    # return normalize(out.getvalue())
     return handlers.render(*parse_fragments(html_string, safe_tags))
 
 
