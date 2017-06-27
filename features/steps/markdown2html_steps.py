@@ -19,7 +19,7 @@ def normalize_html(html_text):
                                             .replace('>', '>\n')
                                             .splitlines()))
 
-    return BeautifulSoup(html_text).prettify()
+    return BeautifulSoup(html_text, 'lxml').prettify()
 
 
 @when('I translate the Markdown file to HTML using markdown')
