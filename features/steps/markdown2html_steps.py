@@ -4,10 +4,8 @@
 import codecs
 import difflib
 from behave import *
-
-from html5tidy import tidy
-
 from lxml import html
+from bs4 import BeautifulSoup
 import antimarkdown
 from antimarkdown import nodes
 
@@ -15,11 +13,7 @@ from antimarkdown import nodes
 def normalize_html(html_text):
     html_text = '\n'.join(html.tostring(el, encoding=str)
                            for el in antimarkdown.parse_fragments(html_text))
-    tidied = tidy(
-        '\n'.join(line.strip()
-                   for line in nodes.whitespace(html_text.strip()).replace('>', '>\n').splitlines()),
-        pretty_print=True)
-    return tidied.decode('utf-8')
+    return BeautifulSoup(html_text).prettify()
 
 
 @when('I translate the Markdown file to HTML using markdown')
