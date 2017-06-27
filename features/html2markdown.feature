@@ -8,57 +8,57 @@ Feature: An HTML-to-Markdown converter
 
   Examples: Basic scenarios
     | file base name                        |
-    | basic/amps-and-angle-encoding         |
-    | basic/auto-links                      |
-    | basic/angle-links-and-img             |
-    | basic/blockquotes-with-code-blocks    |
-    | basic/codeblock-in-list               |
-    | basic/horizontal-rules                |
-    | basic/inline-html-simple              |
-    | basic/inline-html-advanced            |
-    | basic/inline-html-comments            |
-    | basic/links-inline                    |
-    | basic/literal-quotes                  |
-    | basic/markdown-documentation-basics   |
-    | basic/markdown-syntax                 |
-    | basic/nested-blockquotes              |
-    | basic/newline                         |
-    | basic/ordered-and-unordered-list      |
-    | basic/strong-and-em-together          |
-    | basic/tabs                            |
-    | basic/tidyness                        |
-    | misc/adjacent-headers                 |
-    | misc/amp-in-url                       |
-    | misc/ampersand                        |
-    | misc/arabic                           |
-    | misc/autolinks_with_asterisks_russian |
-    | misc/autolinks_with_asterisks         |
-    | misc/backtick-escape                  |
-    | misc/bidi                             |
-    | misc/blank-block-quote                |
-    | misc/blank-para-with-br               |
-    | misc/blockquote-below-paragraph       |
-    | misc/blockquote-hr                    |
-    | misc/blockquote                       |
-    | misc/bold_links                       |
-    | misc/br                               |
-    | misc/code-first-line                  |
-    | misc/em_strong                        |
-    | misc/em-around-links                  |
-    | misc/email                            |
-    | misc/escaped_links                    |
-    | misc/header-in-lists                  |
-    | misc/headers                          |
-    | misc/image_in_links                   |
-    | misc/image-2                          |
-    | misc/image                            |
-    | misc/japanese                         |
-    | misc/link-with-parenthesis            |
-    | misc/lists                            |
-    | misc/lists4                           |
-    | misc/lists5                           |
-    | misc/lists7                           |
-    | misc/lists8                           |
-    | misc/nested-lists                     |
-    | misc/nested-patterns                  |
-    | crossway/hilite                       |
+    # | basic/amps-and-angle-encoding         |
+    # | basic/auto-links                      |
+    # | basic/angle-links-and-img             |
+    # | basic/blockquotes-with-code-blocks    |
+    # | basic/codeblock-in-list               |
+    # | basic/horizontal-rules                |
+    # | basic/inline-html-simple              |
+    # | basic/inline-html-advanced            |
+    # | basic/inline-html-comments            |
+    # | basic/links-inline                    |
+    # | basic/literal-quotes                  |
+    # | basic/markdown-documentation-basics   |
+    # | basic/markdown-syntax                 |
+    # | basic/nested-blockquotes              |
+    # | basic/newline                         |
+    # | basic/ordered-and-unordered-list      |
+    # | basic/strong-and-em-together          |
+    # | basic/tabs                            |
+    # | basic/tidyness                        |
+    # | misc/adjacent-headers                 |
+    # | misc/amp-in-url                       |
+    # | misc/ampersand                        |
+    # | misc/arabic                           |
+    # | misc/autolinks_with_asterisks_russian |
+    # | misc/autolinks_with_asterisks         |
+    # | misc/backtick-escape                  |
+    # | misc/bidi                             |
+    # | misc/blank-block-quote                |
+    # | misc/blank-para-with-br               |
+    # | misc/blockquote-below-paragraph       |
+    # | misc/blockquote-hr                    |
+    # | misc/blockquote                       |
+    # | misc/bold_links                       |
+    # | misc/br                               |
+    # | misc/code-first-line                  |
+    # | misc/em_strong                        |
+    # | misc/em-around-links                  |
+    # | misc/email                            |
+    # | misc/escaped_links                    |
+    # | misc/header-in-lists                  |
+    # | misc/headers                          |
+    # | misc/image_in_links                   |
+    # | misc/image-2                          |
+    # | misc/image                            |
+    # | misc/japanese                         |
+    # | misc/link-with-parenthesis            |
+    # | misc/lists                            |
+    # | misc/lists4                           |
+    # | misc/lists5                           |
+    # | misc/lists7                           |
+    # | misc/lists8                           |
+    # | misc/nested-lists                     |
+    # | misc/nested-patterns                  |
+    # | crossway/hilite                       |
