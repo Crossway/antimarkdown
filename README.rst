@@ -10,7 +10,7 @@ Convert HTML to Markdown, quickly and easily:
     ... <h1>antimarkdown</h1>
     ...
     ... <p>Convert HTML to Markdown, quickly and easily!</p>
-    ... """))_
+    ... """))
     antimarkdown
     ============
 
