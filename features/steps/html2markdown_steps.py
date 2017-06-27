@@ -30,12 +30,6 @@ def step_check_md(context):
     with codecs.open(context.markdown_path, encoding='utf-8') as fi:
         markdown = context.markdown_text = fi.read().rstrip()
     assert context.translated_markdown_text == markdown, '\nDifferences:\n' + '\n'.join(
-        difflib.context_diff([n.replace(' ', '.').encode('ascii', 'replace')
-                              for n in context.translated_markdown_text.splitlines()],
-                             [n.replace(' ', '.').encode('ascii', 'replace')
-                              for n in markdown.splitlines()],
+        difflib.context_diff([n.replace(' ', '.') for n in context.translated_markdown_text.splitlines()],
+                             [n.replace(' ', '.') for n in markdown.splitlines()],
                              fromfile='Got', tofile='Expected'))
-    # assert context.translated_markdown_text == markdown, '\nDifferences:\n' + '\n'.join(
-    #     difflib.context_diff([repr(n) for n in context.translated_markdown_text.splitlines()],
-    #                          [repr(n) for n in markdown.splitlines()],
-    #                          fromfile='Got', tofile='Expected'))

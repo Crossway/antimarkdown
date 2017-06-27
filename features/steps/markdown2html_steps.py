@@ -28,13 +28,8 @@ def step_translate_markdown_to_HTML(context):
 def step_HTML_matches_MD(context):
     with codecs.open(context.html_path, encoding='utf-8') as fi:
         html = context.html_text = normalize_html(fi.read())
+
     assert context.translated_html_text == html, '\nDifferences:\n' + '\n'.join(
-        difflib.context_diff([n.encode('ascii', 'replace')
-                              for n in context.translated_html_text.splitlines()],
-                             [n.encode('ascii', 'replace')
-                              for n in html.splitlines()],
+        difflib.context_diff(context.translated_html_text.splitlines(),
+                             html.splitlines(),
                              fromfile='Got', tofile='Expected'))
-    # assert context.translated_html_text == html, '\nDifferences:\n' + '\n'.join(
-    #     difflib.context_diff([repr(n) for n in context.translated_html_text.splitlines()],
-    #                          [repr(n) for n in html.splitlines()],
-    #                          fromfile='Got', tofile='Expected'))
