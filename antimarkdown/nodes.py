@@ -202,7 +202,12 @@ class LI(Block):
     def text(self):
         li_env = self.blackboard.setdefault('li-nested-block', [])
         li_env.append(False)
-        li = self.blackboard.get('li-style', ['*   '])[-1]
+        default_style = '*   '
+        try:
+            li = self.blackboard.get('li-style', [default_style])[-1]
+        except IndexError:
+            # li outside of list context
+            li = default_style
         if inspect.isgenerator(li):
             li = next(li)
         text = whitespace(eltext(self.el.text)).lstrip()
