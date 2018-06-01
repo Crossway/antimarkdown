@@ -19,7 +19,7 @@ setup(
     },
     zip_safe = False,
 
-    version = "1.0.1",
+    version = "1.0.2",
     description = "HTML to Markdown converter.",
     long_description = open(README).read(),
     author = "David Eyk",
