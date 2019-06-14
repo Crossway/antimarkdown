@@ -25,7 +25,7 @@ setup(
     author = "David Eyk",
     author_email = "deyk@crossway.org",
     url = "http://github.com/Crossway/antimarkdown/",
-    license = 'BSD',
+    license = 'MIT',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
